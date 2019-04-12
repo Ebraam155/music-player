@@ -1,0 +1,69 @@
+#include <iostream>
+#include <Windows.h>
+#include <mmsystem.h>
+#include <string>
+
+using namespace std;
+
+struct song {
+	string search;
+	string artist; 
+	string name;
+	string genre;
+	int year;
+}song1 , song2;
+
+
+
+int main() {
+	
+
+	song song1[100];
+	for(int i = 0 ;i < 100 ; i++){
+	cout << "Search by ( artist , song name , type ): "; 
+	cin >> song1[i].search;
+	if (song1[i].search == "artist") {
+		cout << "Enter Artist name : ";
+		cin >> song1[i].artist;
+		if (song1[i].artist == "cairokee") {
+			cout << "Enter Name of song from the following : " << endl;
+			cout << "cairokee" << endl << "Elkief" << endl << "--> ";
+			cin >> song1[i].artist;
+			if (song1[i].artist == "Elkief") {
+				song1[i].artist = PlaySound(TEXT("Elkief"), NULL, SND_SYNC);
+				cout << song1[i].artist;
+			}
+			if (song1[i].artist == "cairokee") {
+				song1[i].artist = PlaySound(TEXT("cairokee"), NULL, SND_SYNC);
+				cout << song1[i].artist;
+			}
+		}
+		
+		if (song1[i].artist == "sia") {
+			cout << "Enter Name of a song from the following : " << endl;
+			cout << "Chandelier" << endl << "Alive" << endl << "Unstoppable" << endl << "Titanium" << endl << "--> ";
+			cin >> song1[i].artist;
+			if (song1[i].artist == "Alive") {
+				song1[i].artist = PlaySound(TEXT("Alive"), NULL, SND_SYNC);
+				cout << song1[i].artist;
+			}
+			if (song1[i].artist == "Titanium") {
+				song1[i].artist = PlaySound(TEXT("Titanium"), NULL, SND_SYNC);
+				cout << song1[i].artist;
+			}
+			if (song1[i].artist == "Unstoppable") {
+				song1[i].artist = PlaySound(TEXT("Unstoppable"), NULL, SND_SYNC);
+				cout << song1[i].artist;
+			}
+			if (song1[i].artist == "Chandelier") {
+				song1[i].artist = PlaySound(TEXT("Chandelier"), NULL, SND_SYNC);
+				cout << song1[i].artist;
+			}
+			
+		}
+	}
+	}
+
+	system("pause");
+	return 0;
+}
