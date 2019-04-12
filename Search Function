@@ -1,0 +1,51 @@
+#include <iostream>
+#include <Windows.h>
+#include <mmsystem.h>
+#include <string>
+
+using namespace std;
+
+struct song {
+	string artist; 
+	string name;
+	string genre;
+	int year;
+}song1 , song2;
+
+
+
+int main() {
+	
+
+	song song1[100];
+	for(int i = 0 ;i < 100 ; i++){
+	cout << "Search by ( artist , song name , type ): "; 
+	cin >> song1[i].artist;
+	if (song1[i].artist == "artist") {
+		cout << "Enter Artist name : ";
+		cin >> song1[i].artist;
+		if (song1[i].artist == "cairokee") {
+			cout << "Enter Name of song of the following : " << endl;
+			cout << "cairokee" << endl << "Elkief" << endl << "--> ";
+			cin >> song1[i].artist;
+			if (song1[i].artist == "Elkief") {
+				song1[i].artist = PlaySound(TEXT("Elkief"), NULL, SND_SYNC);
+				cout << song1[i].artist;
+			}
+			if (song1[i].artist == "cairokee") {
+				song1[i].artist = PlaySound(TEXT("cairokee"), NULL, SND_SYNC);
+				cout << song1[i].artist;
+			}
+		}
+		if (song1[i].artist == "eminem") {
+			song1[i].artist = PlaySound(TEXT("lose yourself"), NULL, SND_SYNC);
+
+
+			cout << song1[i].artist;
+		}
+	}
+	}
+
+	system("pause");
+	return 0;
+}
