@@ -1,0 +1,73 @@
+#pragma once
+#include <list>
+#include <map>
+#include <vector>
+#include <queue>
+
+class User
+{
+private:
+	vector<pair<string,Chat>>chat_list;
+	map<string, string> contact_list;
+	
+public:
+
+	string Mob_no;
+	string password;
+	string username;
+	User(string name, string pass, string contact);
+	User();
+	// ~User(); m4 h3mlo 3l4an lw d5l fn he4t8l m4 main
+	void DisplayAllChats();
+	void OpenChat(string Contact);
+	void mycontacts();
+	void retrivechat();
+	string Match(string name);
+	void addmsg();
+	void SearchContacts(string name);
+
+};
+
+class Chat{
+	string type;
+
+	string name1;
+	string name2;
+	
+	string group_name;
+	string admin; //sa7b al group
+	int Id; //contact aw ID
+	int NumOfMembers;
+	vector<string> members;
+
+	queue<messages> Msg;
+
+	Chat(string nm1,string nm2);
+
+	Chat(string GN, string Admin); //group
+	Chat(string GN, string Admin, int NoM, vector<string> people);
+	
+	void addmember(string user_name, string new_member);
+	void removemember(string user_name,string member_name);
+	void delchat();
+	~Chat();  //Save
+};
+
+/*class allusers {
+public:	
+	string name;
+	string pass;
+	int contact;
+	
+	void readdata();
+	void savedata();
+};*/
+
+class messages {
+public:
+	bool read;
+	string owner;
+	string mssg;
+
+	messages();
+};
