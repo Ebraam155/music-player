@@ -1,0 +1,416 @@
+//File Containers.h
+#pragma once
+#include <list>
+#include <map>
+#include <vector>
+#include <queue>
+
+class User
+{
+private:
+	vector<pair<string,Chat>>chat_list;
+	map<string, string> contact_list;
+	
+public:
+
+	string Mob_no;
+	string password;
+	string username;
+	User(string name, string pass, string contact);
+	User();
+	// ~User(); m4 h3mlo 3l4an lw d5l fn he4t8l m4 main
+	void DisplayAllChats();
+	void OpenChat(string Contact);
+	void mycontacts();
+	void retrivechat();
+	string Match(string name);
+	void addmsg();
+	void SearchContacts(string name);
+
+};
+
+class Chat{
+	string type;
+
+	string name1;
+	string name2;
+	
+	string group_name;
+	string admin; //sa7b al group
+	int Id; //contact aw ID
+	int NumOfMembers;
+	vector<string> members;
+
+	queue<messages> Msg;
+
+	Chat(string nm1,string nm2);
+
+	Chat(string GN, string Admin); //group
+	Chat(string GN, string Admin, int NoM, vector<string> people);
+	
+	void addmember(string user_name, string new_member);
+	void removemember(string user_name,string member_name);
+	void delchat();
+	~Chat();  //Save
+};
+
+/*class allusers {
+public:	
+	string name;
+	string pass;
+	int contact;
+	
+	void readdata();
+	void savedata();
+};*/
+
+class messages {
+public:
+	bool read;
+	string owner;
+	string mssg;
+
+	messages();
+};
+
+
+
+**********************************************************************
+
+//File Containers.cpp
+#include "Containers.h"
+#include <iostream>
+#include <string>
+#include <map>
+
+using namespace std;
+
+//User functions:
+
+User::User(string name, string pass, string contact) {
+	contact_list.insert(make_pair( "123", "Ambulance" ));
+	contact_list.insert(make_pair( "122", "Police" ));
+	contact_list.insert(make_pair( "125", "Fire Fighting & Civil Defense" ));
+	username = name;
+	password = pass;
+	Mob_no = contact;
+
+}
+User::User(){
+	username = "Unknown";
+	Mob_no = "Unavailable";
+}
+
+void User::mycontacts() {
+	sort(contact_list.begin()->second, contact_list.end()->second); //mmkn ttms7 lw rowida 3amlaha
+	cout << "Contact List: " << endl;
+	for (pair<string,string>it:contact_list) {
+		cout << it->second <<"	"<<it->first << endl<<"=============================="<<endl;
+	}
+}
+
+void User::addmsg(){
+
+}
+
+void User::DisplayAllChats() {  //show all interface chat Name:Latest msg
+	for (pair<string, Chat> it : chat_list) {
+		if (username == it->name1) {
+			cout << it->name2 << endl;
+			cout <<"Message:"<< it->Msg.back().mssg;
+			if (it->Msg.back().read == false) {
+				cout << "**" << endl;
+			}
+		}
+		else if (username == it->name2) {
+			cout << it->name1 << endl;
+			cout << "Message:" << it->Msg.back().mssg;
+			if (it->Msg.back().read == false) {
+				cout << "**" << endl;
+			}
+		}
+		else
+		{
+			cout << it->group_name << endl;
+			cout << "Message:" << it->Msg.back().mssg;
+			if (it->Msg.back().read == false) {
+				cout << "**" << endl;
+			}
+		}
+	}
+}
+
+void User::OpenChat(string Contact)
+{
+	for (pair<string, Chat> it : chat_list) {
+		if (Contact == it->first) {
+			for (queue<messages> itt : it.Msg) {
+				itt->read = true;
+				cout <<itt->owner<<":"<<itt->mssg << endl;
+			}
+		}
+	}
+}
+
+void User::retrivechat() { //get user's chat from all chats
+	
+}
+
+string User::Match(string name) {
+	string Contact;
+	for (pair<string, string> it : contact_list) {
+		if (name == it->second) {
+			Contact = it->first;
+		}
+	}
+
+	return Contact;
+}
+
+void User::SearchContacts(string name) {
+	int i = 0;
+	bool notfound=true;
+	vector<string> contacts_found;
+	for (pair<string,string> it : contact_list) {
+		
+		if (it->second == name) {
+			i++;
+			contacts_found.push_back(it->first);
+			notfound = false;
+			cout << i << "-" it->second << "	" << it->first << endl;
+		}
+	}
+	if (notfound == true) {
+		cout << "No Contact Found with this Name" << endl;
+	}
+	if (contacts_found.size() > 1) {
+		cout << "Choose which Contact: ";
+		int choice;
+		cin >> choice;
+		OpenChat(contacts_found[choice-1]);
+	}
+	else if (contacts_found.size == 1) {
+		OpenChat(contacts_found[0]);
+	}
+
+}
+
+//Group Functions :
+
+Chat::Chat(string nm1,string nm2) {
+	name1 = nm1;
+	name2 = nm2;
+	NumOfMembers = 2;
+}
+
+
+
+Chat::Chat(string GN, string Admin) {
+	group_name = GN;
+	admin = Admin;
+	NumOfMembers = 1;
+
+}
+
+Chat::Chat(string GN, string Admin, int NoM, vector<string> people) {
+	group_name = GN;
+	admin = Admin;
+	NumOfMembers = NoM;
+	members = people;
+}
+
+void Chat::addmember(string user_name,string new_member) {
+	
+	if (user_name == admin) {
+		members.push_back(new_member);
+		NumOfMembers++;
+	}
+	else
+		cout << "Sorry You need Admin permission"<<endl;
+	
+}
+
+void Chat::removemember(string user_name, string member_name) {
+	if (user_name == admin) {
+		for (string it : members) {
+			if (member_name == it) {
+				it.erase();
+				NumOfMembers--;
+			}
+		}
+	}
+	else
+		cout << "Sorry You need Admin permission" << endl;
+
+}
+
+
+//Messages functions:
+messages::messages() {
+	read = false;
+}
+
+
+*************************************************************************************
+//File Source.cpp
+
+#include "Containers.cpp"
+#include <iostream>
+#include <fstream>
+#include <sstream>
+
+
+using namespace std;
+	
+
+void programstart();
+void retrive();
+void login();
+void regist();
+void User_start_Menu();
+
+vector<Chat> allchats;
+vector<User> allusers;
+string us, pass,contact;
+User Current_User;
+
+void main() {
+	bool close = false;
+	cout << "Welcome to WeshApp" << endl;
+	while (true) {
+		programstart(); //gwa while system("cls");-> tms7 al console
+		Current_User.DisplayAllChats();
+		User_start_Menu();
+
+	/*ifstream user;
+	user.open("Users.txt");
+	if (user.fail()) {
+		cout << "Error";
+	}
+	else {
+		for (User it : allusers ) {
+			User temp(NULL,NULL,NULL);
+			user >> temp.name;
+			user >> temp.pass;
+			user >> temp.contact;
+			allusers.push_back(temp);
+		}
+		user.close();
+	}*/
+
+
+	}
+}
+
+void programstart() {
+	int choice;
+	cout << "1-Login		2-Register		3-Exit===>>Entry: ";
+	cin >> choice;
+	if (choice == 1) {
+		login();
+	}
+	else if(choice == 2) {
+		regist();
+	}
+	else if(choice == 3) {
+		exit(0);
+	}
+	else {
+		cout << "Wrong Entry! Try Again";
+	}
+}
+
+void login() {
+	int choice;
+	bool logging = true;
+	while (logging == true) {
+		bool fail = true;
+		cout << "Enter Username: ";
+		cin >> us;
+		for (User t : allusers) {
+			if (us == t.username) {
+				bool done = false;
+				while (done==false){
+					cout << "Enter Password: ";
+					cin >> pass;
+					if (pass == t.password) {
+						Current_User = t;
+						retrive();  //Current_User.retrive
+						fail = false;
+						done = true;
+					}
+					else{
+						cout << "Incorrect Password! Please Try Again...Press 1 to Exit login";
+						cin >> choice;
+						if (choice == 1) {
+							return;
+						}
+						else
+							continue;
+					}
+				}
+				
+			}
+		}
+		if (fail == true) {
+			cout << "Username Does not Exist! Please Try Again...Press 1 to Exit login";
+			cin >> choice;
+			if (choice == 1) {
+				return;
+			}
+			else
+				continue;
+		}
+		else if(fail==false)
+			break;
+	}
+
+}
+
+void regist() {
+
+	cout << "Enter your new Username: ";
+	cin >> us;
+	cout << "Enter your Number(Contact): ";
+	cin >> contact;
+	for (User it : allusers) {
+		if (it.username==us) {
+			cout << "Username already used" << endl;
+			regist();
+		}
+		if(it.Mob_no==contact){
+			cout << "Contact already used" << endl;
+			regist();
+		}
+	}
+	cout << "Enter Your Password: ";
+	cin >> pass;
+	User newcomer(us,pass,contact);
+	allusers.push_back(newcomer);
+}
+
+void User_start_Menu() {
+	int choice;
+	while (true) {
+		cout << "1-Chat with		2-Create Group		3-Show All Contacts		4-Logout ===>> Entry: ";
+		cin >> choice;
+		if (choice == 1) {
+			string entry;
+			cout << "Name:";
+			cin >> entry;
+			Current_User.OpenChat(Current_User.Match(entry));
+		}
+		else if (choice == 2) {
+
+		}
+		else if (choice == 3) {
+			Current_User.mycontacts();
+		}
+		else if (choice == 4) {
+			User m;
+			Current_User = m;
+		}
+	}
+
+}
+
